@@ -5,7 +5,7 @@ class AppDialog {
     return showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: "Dialog",
-      transitionDuration: Duration(milliseconds: 400),
+      transitionDuration: Duration(milliseconds: 500),
       transitionBuilder: (context, animation, secondaryAnimation, widget) {
         Tween<Offset> tween = Tween(begin: Offset(0, -1), end: Offset.zero);
         return SlideTransition(

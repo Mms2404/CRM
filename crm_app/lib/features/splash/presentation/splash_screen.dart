@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void goToLogin () async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 4));
     Navigator.pushReplacementNamed(context, AppRoutes.signIn);
   }
 
@@ -29,8 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Appcolors.day,
       body: Center(
         child: Image.asset('assets/logo.png' ,
-        height: 200,
-        width: 200,),
+        height: 400,
+        width: 400,),
       ),
     );
   }

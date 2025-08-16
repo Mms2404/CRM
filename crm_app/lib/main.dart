@@ -1,4 +1,3 @@
-import 'package:crm_app/core/constants/appColors.dart';
 import 'package:crm_app/core/routes/app_routes.dart';
 import 'package:crm_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,7 +22,6 @@ class MyCrm extends StatelessWidget {
       title: "CRM App",
       theme: ThemeData(
         fontFamily: 'Rockwell',
-        primaryColor: Appcolors.milkyGreen,
       ),
       initialRoute: AppRoutes.splash,
       routes: AppRoutes.routes,
