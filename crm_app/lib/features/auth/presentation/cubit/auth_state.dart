@@ -19,3 +19,9 @@ class AuthError extends AuthState {
 
   AuthError(this.message);
 }
+
+// signUp process
+ class AuthSignUpSuccess extends AuthState {
+  final UserEntity user ;
+  AuthSignUpSuccess(this.user);
+ }

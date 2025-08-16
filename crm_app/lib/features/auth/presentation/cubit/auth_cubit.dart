@@ -7,15 +7,24 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final SignInUsecase signInUsecase;
+  final SignUpUsecase signUpUsecase;
 
-  AuthCubit(this.signInUsecase) : super(AuthInitial());
+  AuthCubit(this.signInUsecase , this.signUpUsecase) : super(AuthInitial());
 
   Future<void> signIn( String email , String password) async {
     emit(AuthLoading());
-    final result = await signInUsecase(SignInParams(email, password));
+    final result = await signInUsecase(SigningParams(email, password));
     result.fold(
       (failure) => emit(AuthError(failure.message)),
       (user) => emit(AuthSuccess(user))
     );
+  }
+
+  Future<void> signUp( String email , String password) async {
+    emit(AuthLoading());
+    final result = await signUpUsecase(SigningParams(email, password));
+    result.fold(
+      (failure) => emit (AuthError(failure.message)), 
+      (user) => emit(AuthSignUpSuccess(user)));
   }
 }

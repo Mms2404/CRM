@@ -2,11 +2,9 @@ import 'package:crm_app/core/constants/appButtonStyles.dart';
 import 'package:crm_app/core/constants/appColors.dart';
 import 'package:crm_app/core/routes/app_routes.dart';
 import 'package:crm_app/core/widgets/appDialog.dart';
-import 'package:crm_app/features/auth/auth_injection.dart';
 import 'package:crm_app/features/auth/presentation/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SigninScreen extends StatelessWidget {
   const SigninScreen({super.key});
@@ -29,10 +27,7 @@ class SigninScreen extends StatelessWidget {
                 onPressed: () {
                   AppDialog.show(
                     context,
-                    BlocProvider(
-                      create: (_) => AuthInjection.provide(),
-                      child: LoginForm(),
-                    ),
+                    LoginForm(),
                   );
                 },
                 style: AppButtonStyles.topButton,

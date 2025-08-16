@@ -4,4 +4,5 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class AuthRepositary {
   Future<Either<Failure , UserEntity>> signIn( String email , String password) ;
+  Future<Either<Failure , UserEntity>> signUp (String email , String password);
 }

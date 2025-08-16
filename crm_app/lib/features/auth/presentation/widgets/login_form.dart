@@ -25,21 +25,20 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if(state is AuthSuccess){
+        if (state is AuthSuccess) {
           Navigator.pushReplacementNamed(context, AppRoutes.customers);
         }
-        if (state is AuthError){
+        if (state is AuthError) {
           print(state.message);
           Notify.show(context, "Login Failed");
         }
       },
       builder: (context, state) {
-        final isLoading = state is AuthLoading ;
+        final isLoading = state is AuthLoading;
         return SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -86,18 +85,19 @@ class _LoginFormState extends State<LoginForm> {
 
                 ElevatedButton(
                   onPressed: isLoading
-                  ? null
-                  : (){
-                    if (_formKey.currentState!.validate()){
-                      context.read<AuthCubit>().signIn(
-                        emailController.text.trim(), 
-                        passwordController.text.trim());
-                    }
-                  },
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<AuthCubit>().signIn(
+                              emailController.text.trim(),
+                              passwordController.text.trim(),
+                            );
+                          }
+                        },
                   style: AppButtonStyles.topButton,
                   child: isLoading
-                    ? CircularProgressIndicator(color: Appcolors.milkyGreen)
-                    : Text(" LOGIN ")
+                      ? CircularProgressIndicator(color: Appcolors.milkyGreen)
+                      : Text(" LOGIN "),
                 ),
 
                 SizedBox(height: 20),

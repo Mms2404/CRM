@@ -18,4 +18,15 @@ class AuthRepoImpl implements AuthRepositary {
     catch(e){
       return Left(AuthFailure(e.toString()));
     }
+  }
+  
+  @override
+  Future<Either<Failure, UserEntity>> signUp(String email, String password) async {
+    try{
+      final user = await datasource.signUp(email, password);
+      return Right(user);
+    }
+    catch(e){
+      return Left(AuthFailure(e.toString()));
+    }
   }}

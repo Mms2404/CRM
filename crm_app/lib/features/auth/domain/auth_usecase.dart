@@ -4,21 +4,33 @@ import 'package:crm_app/features/auth/domain/auth_repositary.dart';
 import 'package:crm_app/features/auth/domain/user_entity.dart';
 import 'package:fpdart/src/either.dart';
 
-class SignInUsecase implements Usecase<UserEntity , SignInParams>{
+class SignInUsecase implements Usecase<UserEntity , SigningParams>{
   final AuthRepositary repositary;
 
   SignInUsecase(this.repositary);
 
   @override
-  Future<Either<Failure, UserEntity>> call(SignInParams params) {
+  Future<Either<Failure, UserEntity>> call(SigningParams params) {
     return repositary.signIn(params.email, params.password);
   }
 
 }
 
-class SignInParams{
+class SignUpUsecase implements Usecase<UserEntity , SigningParams> {
+  final AuthRepositary repository;
+  
+  SignUpUsecase(this.repository);
+  @override
+  Future<Either<Failure, UserEntity>> call(SigningParams params) {
+    return repository.signUp(
+      params.email,
+      params.password);
+  }  
+}
+
+class SigningParams{
   final String email;
   final String password;
   
-  SignInParams(this.email  , this.password);
+  SigningParams(this.email  , this.password);
 }

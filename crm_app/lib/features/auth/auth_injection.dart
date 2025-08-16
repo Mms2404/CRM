@@ -9,7 +9,13 @@ class AuthInjection {
     final firebaseAuth = FirebaseAuth.instance;
     final datasource = FirebaseAuthDatasourceImpl(firebaseAuth);
     final repository = AuthRepoImpl(datasource);
+
     final signInUsecase = SignInUsecase(repository);
-    return AuthCubit(signInUsecase);
+    final signUpUsecase = SignUpUsecase(repository);
+
+    return AuthCubit(
+      signInUsecase,
+      signUpUsecase
+    );
   }
 }
