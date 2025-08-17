@@ -4,7 +4,7 @@ class AppOrder {
   String id;
   DocumentReference customerId; // FK reference
   String orderTitle;
-  double orderAmount;
+  String orderAmount;
   DateTime orderDate;
 
   AppOrder({
@@ -21,7 +21,7 @@ class AppOrder {
       id: doc.id,
       customerId: data['customer_id'] as DocumentReference,
       orderTitle: data['order_title'] ?? '',
-      orderAmount: (data['order_amount'] as num).toDouble(),
+      orderAmount: data['order_amount'] ?? '',
       orderDate: (data['order_date'] as Timestamp).toDate(),
     );
   }

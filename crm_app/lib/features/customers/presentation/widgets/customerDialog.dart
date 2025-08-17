@@ -1,4 +1,5 @@
 import 'package:crm_app/core/constants/appButtonStyles.dart';
+import 'package:crm_app/core/constants/appColors.dart';
 import 'package:crm_app/features/customers/domain/customer.dart';
 import 'package:crm_app/features/customers/domain/order.dart';
 import 'package:crm_app/features/customers/firestore_service.dart';
@@ -79,11 +80,12 @@ class _CustomerDialogState extends State<CustomerDialog> {
                   stream: firestoreService.getOrdersForCustomer(widget.customer.id),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
+                      print(snapshot.error);
                       return Text("Error fetching orders");
                     }
                     if (!snapshot.hasData) {
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator( color: Appcolors.milkyGreen,),
                       );
                     }
                     final orders = snapshot.data!;

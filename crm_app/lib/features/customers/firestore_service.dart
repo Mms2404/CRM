@@ -63,6 +63,8 @@ class AppFirestoreService {
   }
 
   // Get Orders for a Customer
+  // Needs composite indexing
+ //Composite index: Needed when combining multiple conditions, especially with where + orderBy, or multiple where clauses.
   Stream<List<AppOrder>> getOrdersForCustomer(String customerId) {
     final customerRef = _db.collection("customers").doc(customerId);
 

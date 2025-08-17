@@ -58,7 +58,7 @@ class Customers extends StatelessWidget {
                 elevation: 3,
                 child: ListTile(
                   title: Text(customer.name),
-                  subtitle: Text("Last Order : ${customer.phone}"),
+                  subtitle: Text("Phone No.: ${customer.phone}"),
                   trailing:IconButton(
                     onPressed: (){
 
