@@ -1,5 +1,6 @@
 import 'package:crm_app/core/constants/appButtonStyles.dart';
 import 'package:crm_app/core/constants/appColors.dart';
+import 'package:crm_app/core/constants/notify.dart';
 import 'package:crm_app/features/customers/domain/customer.dart';
 import 'package:crm_app/features/customers/domain/order.dart';
 import 'package:crm_app/features/customers/firestore_service.dart';
@@ -102,7 +103,27 @@ class _CustomerDialogState extends State<CustomerDialog> {
                           return ListTile(
                             title: Text(order.orderTitle),
                             subtitle: Text("Amount: ₹${order.orderAmount}"),
-                            trailing: Text(order.orderDate.toLocal().toString().split(" ")[0]),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(order.orderDate.toLocal().toString().split(" ")[0]),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () async {
+                                   try{
+                                    await firestoreService.deleteOrder(order.id , (msg){
+                                    Notify.show(context, msg);
+                                    });
+                                   }
+                                   catch(e){
+                                    print(e.toString());
+                                    Notify.show(context, "Failed to delete order");
+                                   }
+                                  },
+                                ),
+                                // add order funtionality
+                              ],
+                           ),
                           );
                         },
                       ),
@@ -118,7 +139,9 @@ class _CustomerDialogState extends State<CustomerDialog> {
         if (!isEditing) ...[
           TextButton(
             onPressed: () async {
-              await firestoreService.deleteCustomer(widget.customer.id);
+              await firestoreService.deleteCustomer(widget.customer.id , (msg){
+                                      Notify.show(context, msg);
+                                    });
               Navigator.pop(context);
             },
             child: Text("Delete", style: TextStyle(color: Colors.red)),
@@ -146,7 +169,9 @@ class _CustomerDialogState extends State<CustomerDialog> {
                   company: _companyController.text,
                   createdAt: widget.customer.createdAt,
                 );
-                await firestoreService.updateCustomer(updatedCustomer);
+                await firestoreService.updateCustomer(updatedCustomer , (msg){
+                                      Notify.show(context, msg);
+                                    });
                 Navigator.pop(context);
               }
             },

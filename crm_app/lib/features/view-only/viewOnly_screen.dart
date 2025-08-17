@@ -1,77 +1,99 @@
+import 'package:crm_app/core/constants/appButtonStyles.dart';
 import 'package:crm_app/core/constants/appColors.dart';
+import 'package:crm_app/core/constants/notify.dart';
 import 'package:crm_app/core/routes/app_routes.dart';
+import 'package:crm_app/features/customers/domain/customer.dart';
 import 'package:crm_app/features/customers/firestore_service.dart';
-import 'package:crm_app/features/view-only/widgets/viewDialog.dart';
+import 'package:crm_app/features/view-only/dummyApi_model.dart';
+import 'package:crm_app/features/view-only/dummy_datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ViewonlyScreen extends StatelessWidget {
-  ViewonlyScreen({super.key });
+class RandomCompany extends StatefulWidget {
+  @override
+  _RandomCompanyState createState() => _RandomCompanyState();
+}
+
+class _RandomCompanyState extends State<RandomCompany> {
+
+  Company? company;
+  bool isLoading = false;
+
+  void getCompany() async {
+    setState(() => isLoading = true);
+    final fetchedCompany = await CompanyDatasource.fetchRandomCompany();
+    setState(() {
+      company = fetchedCompany;
+      isLoading = false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final firestoreService = context.read<AppFirestoreService>();
     return Scaffold(
-      backgroundColor: Appcolors.day,
       appBar: AppBar(
-        backgroundColor: Appcolors.milkyGreen,
+        title: Text('Random Company'),
         leading: IconButton(
           onPressed: (){
-            Navigator.pushReplacementNamed(context, AppRoutes.signIn);
-          }, 
-          icon: Icon(Icons.arrow_back_ios_new_sharp)),
-          title: Text("ALL CUSTOMERS"),
+            Navigator.pushNamed(context, AppRoutes.signIn);
+          },
+           icon: Icon(Icons.arrow_back_ios_new_sharp)),),
+           
+      body: Center(
+        child: isLoading
+            ? CircularProgressIndicator(color: Appcolors.night,)
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   ElevatedButton(
+                    style: AppButtonStyles.topButton,
+                    onPressed: getCompany,
+                    child: Text('Fetch Random Company'),
+                    ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                      style: AppButtonStyles.topButton,
+                      onPressed: company != null
+                      ? () async {
+                        final firestoreService = context.read<AppFirestoreService>();
+                        try{
+                          final customer = Customer(
+                            id: '', 
+                            name: company!.name,
+                            email: company!.email,
+                            phone: company!.phone,
+                            company: company!.name, 
+                            createdAt: DateTime.now()
+                          );
+
+                          await firestoreService.addCustomer(customer, (msg){
+                            Notify.show(context, msg);
+                          });
+                          
+                        }
+                        catch(e){
+                          print(e.toString());
+                          Notify.show(context, "Failed to add customer");
+                        }
+                      }
+                      : null,
+                      child: Text('Add as Customer'),
+                    ),
+                    SizedBox(height: 20,),
+                  if (company != null) ...[
+                    Text('Name: ${company!.name}'),
+                    Text('Email: ${company!.email}'),
+                    Text('Phone: ${company!.phone}'),
+                    Text('VAT: ${company!.vat}'),
+                    Text('Country: ${company!.country}'),
+                    SizedBox(height: 10),
+                    SizedBox(height: 30,),
+                    
+                  ]
+                ],
+              ),
       ),
-      body: StreamBuilder(
-        stream: firestoreService.getCustomers(), 
-        builder: (context , snapshot){
-
-          if(snapshot.hasError){
-            print(snapshot.error);
-            return Center(
-              child: Text("ERROR FETCHING CUSTOMERS"),
-            );
-          }
-
-          if (!snapshot.hasData){
-            return Center(child: CircularProgressIndicator(color: Appcolors.night,),);
-          }
-
-          final customers = snapshot.data!;
-          if(customers.isEmpty){
-            return Center(
-              child: Text("NO CUSTOMERS YET !"),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: customers.length,
-            itemBuilder: (context , index){
-              final customer = customers[index];
-              return Card(
-                color: Appcolors.day,
-                elevation: 3,
-                child: ListTile(
-                  title: Text(customer.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Divider(),
-                      Text("Email      : ${customer.email}"),
-                      Text("Phone No.  : ${customer.phone}" , style: TextStyle(color: Appcolors.milkyGreen),),
-                      Text("Created on : ${customer.createdAt.toLocal().toString().split(" ")[0]}")
-                    ],
-                  ),
-                  onTap: (){
-                    showDialog(
-                      context: context, 
-                      builder: (_) => ViewDialog(customer: customer));
-                  },
-                ),
-              );
-            });
-        })
-
     );
   }
 }

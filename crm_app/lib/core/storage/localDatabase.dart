@@ -63,4 +63,20 @@ class LocalDatabase {
     final db = await init();
     return await db.delete("customers", where: "id = ?", whereArgs: [id]);
   }
+
+  // Delete Order locally
+static Future<int> deleteOrder(int id) async {
+  final db = await init();
+  return await db.delete(
+    "orders",
+    where: "id = ?",
+    whereArgs: [id],
+  );
+}
+
+// Fetch all locally stored deleted orders
+static Future<List<Map<String, dynamic>>> getOrders() async {
+  final db = await init();
+  return await db.query("orders"); // returns list of deleted orders
+}
 }

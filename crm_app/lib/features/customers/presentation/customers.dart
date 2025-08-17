@@ -1,4 +1,5 @@
 import 'package:crm_app/core/constants/appColors.dart';
+import 'package:crm_app/core/constants/notify.dart';
 import 'package:crm_app/core/routes/app_routes.dart';
 import 'package:crm_app/features/customers/firestore_service.dart';
 import 'package:crm_app/features/customers/presentation/widgets/customerDialog.dart';
@@ -60,8 +61,16 @@ class Customers extends StatelessWidget {
                   title: Text(customer.name),
                   subtitle: Text("Phone No.: ${customer.phone}"),
                   trailing:IconButton(
-                    onPressed: (){
-
+                    onPressed: ()async {
+                      try{
+                        await firestoreService.deleteCustomer(customer.id , (msg){
+                        Notify.show(context, msg);
+                        });
+                      }
+                      catch(e){
+                        print(e.toString());
+                        Notify.show(context, "Failed to delete order");
+                      }
                     },
                     icon: Icon(Icons.delete_forever_sharp , color: Colors.red,)),
                   onTap: (){

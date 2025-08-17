@@ -67,7 +67,6 @@ class _AddCustomerState extends State<AddCustomer> {
               ElevatedButton(
                 style: AppButtonStyles.commonButton,
                 onPressed: () async {
-                  try{
                     final firestoreService = context.read<AppFirestoreService>();
                   
                     final customer = Customer(
@@ -79,14 +78,17 @@ class _AddCustomerState extends State<AddCustomer> {
                       createdAt: DateTime.now(),
                     );
 
-                    await firestoreService.addCustomer(customer);
-                    Notify.show(context, "Customer added succesfully");
-                    Navigator.pop(context);
-                  }
-                  catch(e){
-                    print(e.toString());
-                    Notify.show(context, "Failed to add customer");
-                  }
+                    try{
+                      await firestoreService.addCustomer(customer, (msg){
+                        Notify.show(context, msg);
+                      });
+                       Navigator.pop(context);
+                    }
+                    catch (e){
+                      print(e.toString());
+                      Notify.show(context, "Failed to add customer");
+                    }
+                   
                 },
                 child: Text("Save"),
               ),

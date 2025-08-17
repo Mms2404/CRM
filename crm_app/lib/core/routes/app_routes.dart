@@ -11,7 +11,7 @@ class AppRoutes {
   static const String splash = '/';
   static const String signIn = '/signIn';
   static const String signUp = '/signUp';
-  static const String viewOnly = '/view-Only';
+  static const String viewOnly = '/random-company';
   static const String customers = '/customers';
   static const String addCustomer = '/add-customer';
 
@@ -19,7 +19,7 @@ class AppRoutes {
     splash : (context) => SplashScreen(),
     signIn : (context) => SigninScreen(),
     signUp : (context) => SignupScreen(),
-    viewOnly : (context) => ViewonlyScreen(),
+    viewOnly : (context) => RandomCompany(),
     customers: (context) => Customers(),
     addCustomer : (context) => AddCustomer(),
   };
