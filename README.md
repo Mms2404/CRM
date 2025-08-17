@@ -51,7 +51,7 @@ Sync applies to:
 
 ```
 git clone https://github.com/Mms2404/CRM
-cd CRM
+cd crm_app
 flutter pub get
 ```
 -> Add your Firebase project for Android
