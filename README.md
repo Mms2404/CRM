@@ -1,3 +1,5 @@
+⚠️ This project has been moved to: https://github.com/Mms2404/internship-assessments
+
 Internship
 # CRM
 A Flutter-based Customer Relationship Management (CRM) application designed to manage customers and their orders with offline-first support. This project integrates Firebase Firestore for cloud storage, Firebase Authentication for login/signup, and local storage for offline operations. Additionally, it can fetch random company data via a free API for quick customer addition.
